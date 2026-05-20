@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ru"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;Болашак AI — Помощник директора&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>* { box-sizing: border-box; margin: 0; padding: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#app { width: 100%; max-width: 680px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.10); display: flex; flex-direction: column; height: 90vh; max-height: 700px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#header { background: #1a3d2e; padding: 14px 18px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.h-avatar { width: 38px; height: 38px; border-radius: 50%; background: #2d6a4a; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.h-name { color: #e1f5ee; font-size: 15px; font-weight: 600; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.h-status { color: #5dcaa5; font-size: 12px; display: flex; align-items: center; gap: 5px; margin-top: 2px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dot { width: 7px; height: 7px; border-radius: 50%; background: #5dcaa5; animation: pulse 2s infinite; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#quick { padding: 10px 14px; border-bottom: 1px solid #e8ede9; display: flex; gap: 7px; flex-wrap: wrap; background: #f7faf7; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.qb { font-size: 12px; padding: 5px 11px; border: 1px solid #c5d9c8; border-radius: 20px; background: #fff; color: #2d5a3d; cursor: pointer; white-space: nowrap; transition: all 0.15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.qb:hover { background: #e1f5ee; border-color: #5dcaa5; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg { display: flex; gap: 10px; animation: fadeIn 0.2s ease; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg.user { flex-direction: row-reverse; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.m-av { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg.bot .m-av { background: #1a3d2e; color: #5dcaa5; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg.user .m-av { background: #e1f0ff; color: #1a5fc8; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.m-bub { max-width: 78%; padding: 10px 14px; font-size: 14px; line-height: 1.55; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg.bot .m-bub { background: #f4f7f4; color: #1a2e1e; border-radius: 4px 14px 14px 14px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.msg.user .m-bub { background: #1a3d2e; color: #e1f5ee; border-radius: 14px 4px 14px 14px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.typing { display: flex; align-items: center; gap: 5px; padding: 10px 14px; background: #f4f7f4; border-radius: 4px 14px 14px 14px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.typing span { width: 7px; height: 7px; border-radius: 50%; background: #5dcaa5; animation: bounce 1.2s infinite; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.typing span:nth-child(2) { animation-delay: 0.15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.typing span:nth-child(3) { animation-delay: 0.3s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#inp-area { padding: 12px 14px; border-top: 1px solid #e8ede9; display: flex; gap: 8px; background: #fff; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#txt { flex: 1; border: 1px solid #c5d9c8; border-radius: 10px; padding: 10px 13px; font-size: 14px; font-family: inherit; background: #f7faf7; color: #1a2e1e; resize: none; outline: none; min-height: 42px; max-height: 100px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#txt:focus { border-color: #2d6a4a; box-shadow: 0 0 0 3px rgba(29,158,117,0.12); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#send { width: 42px; height: 42px; border-radius: 10px; background: #1a3d2e; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#send:hover { background: #2d6a4a; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#send svg { width: 18px; height: 18px; fill: #5dcaa5; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#send:disabled { opacity: 0.5; cursor: not-allowed; }</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;div id="app"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="h-avatar"&gt;🤖&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="h-name"&gt;Болашак AI — Помощник директора&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="h-status"&gt;&lt;span class="dot"&gt;&lt;/span&gt;Онлайн · BolashakGo&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="quick"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Сколько магазинов работает сейчас и каковы их статусы?')"&gt;🏪 Магазины&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Какие процессы нужно автоматизировать в первую очередь?')"&gt;⚡ Автоматизация&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Расскажи про BolashakGo — что готово, что ещё нет?')"&gt;📱 BolashakGo&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Какова структура отделов компании?')"&gt;🏢 Структура&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Каков IT-стек проекта и какие есть ограничения?')"&gt;💻 IT стек&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="qb" onclick="qa('Расскажи про систему мотивации продавцов в магазине Бажова')"&gt;💰 Мотивация&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="messages"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="msg bot"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="m-av"&gt;🤖&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="m-bub"&gt;Добрый день! Я ваш AI-помощник по сети &lt;strong&gt;Болашак&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Знаю всё о магазинах, проекте BolashakGo, IT-инфраструктуре и задачах автоматизации. Задайте любой вопрос или выберите тему выше.&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="inp-area"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;textarea id="txt" placeholder="Написать сообщение..." rows="1" onkeydown="onKey(event)" oninput="resize(this)"&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="send" onclick="send()" aria-label="Отправить"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M2 21l21-9L2 3v7l15 2-15 2z"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">// ⬇️ ВСТАВЬТЕ ВАШ API КЛЮЧ СЮДА (между кавычками)</p>
+<p class="p1">const API_KEY = "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";</p>
+<p class="p2"><br></p>
+<p class="p1">const SYSTEM = `Ты — AI-агент помощник исполнительного директора сети строительно-хозяйственных магазинов "Болашак" (ВКО, Казахстан).</p>
+<p class="p2"><br></p>
+<p class="p1">ДАННЫЕ О КОМПАНИИ:</p>
+<p class="p1">Магазины:</p>
+<p class="p1">1. Бажова — г. Усть-Каменогорск, ул. Бажова 99/2. Площадь 1485 кв.м (торговая 1300). Работает, 08:00–20:00</p>
+<p class="p1">2. Меновное — г. Усть-Каменогорск, Шоссейный пер. 25/1. Площадь 1000 кв.м (торговая 490). Работает, 08:00–20:00</p>
+<p class="p1">3. Большенарым — ВКО, с. Улкен-Нарым, ул. Огнева 35. Площадь 800 кв.м (торговая 220). Работает, 08:00–20:00</p>
+<p class="p1">4. ОРЦ — г. Усть-Каменогорск, ул. Жибек Жолы 44к1. Площадь 610 кв.м. Технические продажи с 16.05.2026, 09:00–20:00</p>
+<p class="p1">5. Домино — г. Усть-Каменогорск, ул. Каныша Сатпаева 1. Площадь 1500 кв.м. Открытие ~15.06.2026</p>
+<p class="p2"><br></p>
+<p class="p1">Распределительный центр: 1230 кв.м. Процесс: приёмка → приход в 1С → распределение → маркировка → доставка.</p>
+<p class="p2"><br></p>
+<p class="p1">Отделы: коммерческий, маркетинг, HR, СБ (физическая + экономическая безопасность/ревизоры), бухгалтерия, финдиректор (аутсорс), IT (1С программист аутсорс + штатный сисадмин), РЦ, магазины.</p>
+<p class="p2"><br></p>
+<p class="p1">Товарные категории: бытовая техника, автотовары, товары для дома, кондитерские изделия/напитки/снэки/табак, товары для офиса и детей, электроинструменты, бытовая химия, строительство и ремонт, текстиль/одежда/обувь.</p>
+<p class="p2"><br></p>
+<p class="p1">ПРОЕКТ BolashakGo (система лояльности с кэшбэком):</p>
+<p class="p1">- Клиент скачивает приложение, регистрируется по телефону и ФИО</p>
+<p class="p1">- На кассе показывает QR → кассир сканирует → кэшбэк начисляется автоматически</p>
+<p class="p1">- Стек: React Native (Expo), Node.js (Express), PostgreSQL, Railway, интеграция 1С через расширение конфигурации</p>
+<p class="p1">- API: GET /api/qr/{userId} — идентификация, POST /api/receipt — отправка чека</p>
+<p class="p2"><br></p>
+<p class="p1">Статус этапов BolashakGo:</p>
+<p class="p1">✅ Мобильное приложение и бэкенд — готово</p>
+<p class="p1">⏳ Интеграция 1С — в процессе</p>
+<p class="p1">📊 Товарная аналитика — предстоит</p>
+<p class="p1">📱 Публикация App Store / Google Play — предстоит</p>
+<p class="p1">🖥️ Перенос с Railway на локальный сервер — предстоит</p>
+<p class="p1">💬 WhatsApp/SMS триггеры — предстоит</p>
+<p class="p1">🎯 Поведенческая аналитика — предстоит</p>
+<p class="p2"><br></p>
+<p class="p1">IT ограничения:</p>
+<p class="p1">- 1С сервер (bolashaq-srv) доступен только через TailScale VPN</p>
+<p class="p1">- На MacBook M2 только 1С 8.3.25+ (ARM)</p>
+<p class="p1">- Конфигурацию 1С менять нельзя — только расширения</p>
+<p class="p1">- Railway бесплатный период ~1 месяц</p>
+<p class="p2"><br></p>
+<p class="p1">Аналитика: Google Sheets + Google Apps Script. Данные вручную забивает руководитель из 1С каждый день. Обновление дашборда — будние дни в 18:00.</p>
+<p class="p2"><br></p>
+<p class="p1">Система мотивации (магазин Бажова):</p>
+<p class="p1">- 1 категория: 85 000 тг, 2 категория: 110 000 тг, 3 категория: 150 000 тг, стажёр — только оклад (1 месяц)</p>
+<p class="p1">- Бонусы: &lt;85% плана — 0%, 85-94% — ~25%, 95-105% — ~55%, &gt;105% — &gt;55%</p>
+<p class="p1">- График: 2/2, 5/2 или 6/1 по желанию</p>
+<p class="p2"><br></p>
+<p class="p1">Instagram: @bolashak_13</p>
+<p class="p2"><br></p>
+<p class="p1">ТВОЯ РОЛЬ:</p>
+<p class="p1">- Отвечай кратко, по делу, на русском языке</p>
+<p class="p1">- Помогай с задачами автоматизации, IT-решениями, управлением</p>
+<p class="p1">- Давай конкретные практические рекомендации</p>
+<p class="p1">- Знаешь весь контекст компании — не переспрашивай лишнего`;</p>
+<p class="p2"><br></p>
+<p class="p1">let history = [];</p>
+<p class="p1">let busy = false;</p>
+<p class="p2"><br></p>
+<p class="p1">function resize(el) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.style.height = 'auto';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.style.height = Math.min(el.scrollHeight, 100) + 'px';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function onKey(e) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.key === 'Enter' &amp;&amp; !e.shiftKey) { e.preventDefault(); send(); }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function qa(text) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('txt').value = text;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>send();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function addMsg(role, html) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const wrap = document.getElementById('messages');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const d = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.className = 'msg ' + (role === 'user' ? 'user' : 'bot');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const av = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>av.className = 'm-av';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>av.textContent = role === 'user' ? 'ИД' : '🤖';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const bub = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>bub.className = 'm-bub';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>bub.innerHTML = html;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.appendChild(av);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.appendChild(bub);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>wrap.appendChild(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>wrap.scrollTop = wrap.scrollHeight;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return bub;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function showTyping() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const wrap = document.getElementById('messages');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const d = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.className = 'msg bot';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.id = 'typing';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const av = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>av.className = 'm-av';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>av.textContent = '🤖';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>t.className = 'typing';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>t.innerHTML = '&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.appendChild(av);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.appendChild(t);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>wrap.appendChild(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>wrap.scrollTop = wrap.scrollHeight;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function fmt(text) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return text</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/&gt;/g,'&amp;gt;')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.replace(/\*\*(.*?)\*\*/g,'&lt;strong&gt;$1&lt;/strong&gt;')</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.replace(/\n/g,'&lt;br&gt;');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">async function send() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (busy) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const inp = document.getElementById('txt');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const text = inp.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!text) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (API_KEY === 'ВСТАВЬТЕ_КЛЮЧ_ЗДЕСЬ') {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>addMsg('bot', '⚠️ Вставьте API ключ в файл (строка: &lt;code&gt;const API_KEY = "..."&lt;/code&gt;)');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>inp.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>inp.style.height = 'auto';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>busy = true;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('send').disabled = true;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>addMsg('user', fmt(text));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>history.push({ role: 'user', content: text });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showTyping();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const resp = await fetch('https://api.anthropic.com/v1/messages', {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">      </span>headers: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>'Content-Type': 'application/json',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>'x-api-key': API_KEY,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>'anthropic-version': '2023-06-01',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>'anthropic-dangerous-direct-browser-access': 'true'</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">        </span>model: 'claude-sonnet-4-20250514',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>max_tokens: 1024,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>system: SYSTEM,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>messages: history</p>
+<p class="p1"><span class="Apple-converted-space">      </span>})</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const data = await resp.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const reply = data.content?.[0]?.text || 'Ошибка получения ответа.';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>history.push({ role: 'assistant', content: reply });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('typing')?.remove();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>addMsg('bot', fmt(reply));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('typing')?.remove();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>addMsg('bot', '❌ Ошибка подключения. Проверьте интернет и API ключ.');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>busy = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('send').disabled = false;</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
