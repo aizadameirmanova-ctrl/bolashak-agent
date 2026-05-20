@@ -7,7 +7,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
-#app{width:100%;max-width:680px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1);display:flex;flex-direction:column;height:90vh;max-height:700px}
+#setup{background:#fff;border-radius:16px;padding:32px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.1);text-align:center}
+#setup h2{color:#1a3d2e;margin-bottom:8px;font-size:20px}
+#setup p{color:#666;font-size:14px;margin-bottom:24px;line-height:1.5}
+#setup input{width:100%;border:1px solid #c5d9c8;border-radius:10px;padding:12px;font-size:14px;outline:none;margin-bottom:12px}
+#setup input:focus{border-color:#2d6a4a}
+#setup button{width:100%;background:#1a3d2e;color:#e1f5ee;border:none;border-radius:10px;padding:12px;font-size:15px;cursor:pointer;font-weight:600}
+#setup button:hover{background:#2d6a4a}
+#app{display:none;width:100%;max-width:680px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1);flex-direction:column;height:90vh;max-height:700px}
 #hdr{background:#1a3d2e;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .hav{width:38px;height:38px;border-radius:50%;background:#2d6a4a;display:flex;align-items:center;justify-content:center;font-size:20px}
 .hnm{color:#e1f5ee;font-size:15px;font-weight:600}
@@ -42,6 +49,12 @@ body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justif
 </style>
 </head>
 <body>
+<div id="setup">
+  <h2>🤖 Болашак AI</h2>
+  <p>Введите ваш Anthropic API ключ для запуска помощника.<br>Ключ хранится только в памяти браузера.</p>
+  <input id="keyinput" type="password" placeholder="sk-ant-api03-..." onkeydown="if(event.key==='Enter')start()"/>
+  <button onclick="start()">Войти</button>
+</div>
 <div id="app">
 <div id="hdr">
   <div class="hav">🤖</div>
@@ -65,16 +78,21 @@ body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justif
 </div>
 </div>
 <script>
-const KEY="ВСТАВЬТЕ_КЛЮЧ_ЗДЕСЬ";
+let KEY='',H=[],busy=false;
 const SYS=`Ты — AI-помощник исполнительного директора сети магазинов Болашак (ВКО, Казахстан). Отвечай кратко по-русски.
-
 Магазины: 1.Бажова(1485кв.м,работает) 2.Меновное(1000кв.м,работает) 3.Большенарым(800кв.м,работает) 4.ОРЦ(610кв.м,тех.продажи с 16.05.2026) 5.Домино(1500кв.м,открытие ~15.06.2026). РЦ:1230кв.м.
 Отделы: коммерческий, маркетинг, HR, СБ, бухгалтерия, финдиректор(аутсорс), IT(1С аутсорс+сисадмин), РЦ, магазины.
 BolashakGo — система лояльности с кэшбэком. Стек: React Native, Node.js, PostgreSQL, Railway. Интеграция 1С через расширение.
 Готово: приложение и бэкенд. В процессе: интеграция 1С. Предстоит: аналитика, App Store/Play, перенос с Railway, WhatsApp-триггеры.
 Ограничения: 1С сервер только через TailScale VPN, MacBook M2 — 1С 8.3.25+, конфигурацию менять нельзя.
 Мотивация Бажова: оклады 85/110/150 тыс.тг, бонусы от 25% до 55%+ при выполнении плана.`;
-let H=[],busy=false;
+function start(){
+  const k=document.getElementById('keyinput').value.trim();
+  if(!k.startsWith('sk-ant-')){alert('Введите корректный ключ (начинается с sk-ant-)');return;}
+  KEY=k;
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='flex';
+}
 function rs(e){e.style.height='auto';e.style.height=Math.min(e.scrollHeight,100)+'px'}
 function ok(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go()}}
 function qa(t){document.getElementById('txt').value=t;go()}
@@ -97,7 +115,6 @@ async function go(){
   if(busy)return;
   const i=document.getElementById('txt');
   const t=i.value.trim();if(!t)return;
-  if(KEY==='ВСТАВЬТЕ_КЛЮЧ_ЗДЕСЬ'){add('bot','⚠️ Вставьте API ключ в файл!');return;}
   i.value='';i.style.height='auto';busy=true;
   document.getElementById('btn').disabled=true;
   add('user',fmt(t));H.push({role:'user',content:t});showT();
