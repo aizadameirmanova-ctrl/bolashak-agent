@@ -10,9 +10,8 @@ body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justif
 #setup{background:#fff;border-radius:16px;padding:32px;max-width:400px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.1);text-align:center}
 #setup h2{color:#1a3d2e;margin-bottom:8px;font-size:20px}
 #setup p{color:#666;font-size:14px;margin-bottom:24px;line-height:1.5}
-#setup input{width:100%;border:1px solid #c5d9c8;border-radius:10px;padding:12px;font-size:14px;outline:none;margin-bottom:8px}
+#setup input{width:100%;border:1px solid #c5d9c8;border-radius:10px;padding:12px;font-size:14px;outline:none;margin-bottom:12px}
 #setup input:focus{border-color:#2d6a4a}
-#setup .hint{font-size:12px;color:#999;margin-bottom:16px;text-align:left}
 #setup button{width:100%;background:#1a3d2e;color:#e1f5ee;border:none;border-radius:10px;padding:12px;font-size:15px;cursor:pointer;font-weight:600}
 #setup button:hover{background:#2d6a4a}
 #app{display:none;width:100%;max-width:680px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1);flex-direction:column;height:90vh;max-height:700px}
@@ -52,10 +51,8 @@ body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justif
 <body>
 <div id="setup">
   <h2>🤖 Болашак AI</h2>
-  <p>Введите ваш Anthropic API ключ и имя для входа.</p>
-  <input id="nameinput" type="text" placeholder="Ваше имя (например: Айзада)"/>
-  <input id="keyinput" type="password" placeholder="sk-ant-api03-..." onkeydown="if(event.key==='Enter')start()"/>
-  <p class="hint">Ключ хранится только в памяти браузера</p>
+  <p>Введите ваше имя для входа</p>
+  <input id="nameinput" type="text" placeholder="Ваше имя (например: Айзада)" onkeydown="if(event.key==='Enter')start()"/>
   <button onclick="start()">Войти</button>
 </div>
 <div id="app">
@@ -81,25 +78,30 @@ body{font-family:-apple-system,sans-serif;background:#f0f4f0;display:flex;justif
 </div>
 </div>
 <script>
-const SHEETS_URL='https://script.google.com/macros/s/AKfycbw-s4zCTwi8ErekY6c-M2Xz94470h_ISMl90EIRp3mW7hXSlHkXb-G1YhQ8xOA0CXSV/exec';
-let KEY='',USERNAME='',H=[],busy=false;
-const SYS=`Ты — AI-помощник исполнительного директора сети магазинов Болашак (ВКО, Казахстан). Отвечай кратко по-русски.
-Магазины: 1.Бажова(1485кв.м,работает) 2.Меновное(1000кв.м,работает) 3.Большенарым(800кв.м,работает) 4.ОРЦ(610кв.м,тех.продажи с 16.05.2026) 5.Домино(1500кв.м,открытие ~15.06.2026). РЦ:1230кв.м.
-Отделы: коммерческий, маркетинг, HR, СБ, бухгалтерия, финдиректор(аутсорс), IT(1С аутсорс+сисадмин), РЦ, магазины.
-BolashakGo — система лояльности с кэшбэком. Стек: React Native, Node.js, PostgreSQL, Railway. Интеграция 1С через расширение.
-Готово: приложение и бэкенд. В процессе: интеграция 1С. Предстоит: аналитика, App Store/Play, перенос с Railway, WhatsApp-триггеры.
-Ограничения: 1С сервер только через TailScale VPN, MacBook M2 — 1С 8.3.25+, конфигурацию менять нельзя.
-Мотивация Бажова: оклады 85/110/150 тыс.тг, бонусы от 25% до 55%+ при выполнении плана.`;
+const SERVER = 'http://100.121.80.67:3001';
+let USERNAME='', H=[], busy=false;
 
 function start(){
-  const k=document.getElementById('keyinput').value.trim();
   const n=document.getElementById('nameinput').value.trim();
   if(!n){alert('Введите ваше имя');return;}
-  if(!k.startsWith('sk-ant-')){alert('Введите корректный ключ (начинается с sk-ant-)');return;}
-  KEY=k; USERNAME=n;
+  USERNAME=n;
   document.getElementById('setup').style.display='none';
   document.getElementById('app').style.display='flex';
+  loadHistory();
 }
+
+async function loadHistory(){
+  try{
+    const r=await fetch(`${SERVER}/history/${USERNAME}`);
+    const data=await r.json();
+    H=data;
+    data.forEach(m=>{
+      if(m.role==='user') add('user',fmt(m.content));
+      else add('bot',fmt(m.content));
+    });
+  }catch(e){}
+}
+
 function rs(e){e.style.height='auto';e.style.height=Math.min(e.scrollHeight,100)+'px'}
 function ok(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go()}}
 function qa(t){document.getElementById('txt').value=t;go()}
@@ -119,37 +121,25 @@ function showT(){
 }
 function fmt(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}
 
-function saveToSheets(question, answer){
-  fetch(SHEETS_URL, {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({user:USERNAME, question:question, answer:answer})
-  }).catch(()=>{});
-}
-
 async function go(){
   if(busy)return;
   const i=document.getElementById('txt');
   const t=i.value.trim();if(!t)return;
   i.value='';i.style.height='auto';busy=true;
   document.getElementById('btn').disabled=true;
-  add('user',fmt(t));H.push({role:'user',content:t});showT();
+  add('user',fmt(t));showT();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
+    const r=await fetch(`${SERVER}/chat`,{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:1024,system:SYS,messages:H})
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({user:USERNAME, message:t})
     });
-    const d=await r.json();
-    const rep=d.content?.[0]?.text||'Ошибка ответа.';
-    H.push({role:'assistant',content:rep});
+    const data=await r.json();
     document.getElementById('tp')?.remove();
-    add('bot',fmt(rep));
-    saveToSheets(t, rep);
+    add('bot',fmt(data.reply));
   }catch(e){
     document.getElementById('tp')?.remove();
-    add('bot','❌ Ошибка подключения.');
+    add('bot','❌ Ошибка подключения к серверу.');
   }
   busy=false;document.getElementById('btn').disabled=false;
 }
